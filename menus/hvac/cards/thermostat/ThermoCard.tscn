@@ -1,0 +1,186 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://menus/hvac/cards/thermostat/thermo_card.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="SB_Card"]
+bg_color = Color(0.137, 0.157, 0.196, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.196, 0.220, 0.259, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="SB_BtnNormal"]
+bg_color = Color(0.118, 0.137, 0.173, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.196, 0.220, 0.259, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="SB_BtnHover"]
+bg_color = Color(0.122, 0.435, 0.933, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="SB_Empty"]
+
+[node name="ThermoCard" type="PanelContainer"]
+theme_override_styles/panel = SubResource("SB_Card")
+script = ExtResource("1")
+
+[node name="ThermoTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+autostart = false
+
+[node name="ThermoMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ThermoVBox" type="VBoxContainer" parent="ThermoMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ThermoTitleRow" type="HBoxContainer" parent="ThermoMargin/ThermoVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ThermoTitle" type="Label" parent="ThermoMargin/ThermoVBox/ThermoTitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Thermostat"
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="ThermoStatusLabel" type="Label" parent="ThermoMargin/ThermoVBox/ThermoTitleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="ThermoSep1" type="ColorRect" parent="ThermoMargin/ThermoVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="TempsRow" type="HBoxContainer" parent="ThermoMargin/ThermoVBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CurrVBox" type="VBoxContainer" parent="ThermoMargin/ThermoVBox/TempsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="CurrTitle" type="Label" parent="ThermoMargin/ThermoVBox/TempsRow/CurrVBox"]
+layout_mode = 2
+text = "CURRENT"
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="CurrTempLabel" type="Label" parent="ThermoMargin/ThermoVBox/TempsRow/CurrVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–.–°C"
+theme_override_font_sizes/font_size = 68
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="HumidityLabel" type="Label" parent="ThermoMargin/ThermoVBox/TempsRow/CurrVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Humidity: –%"
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="VSep" type="ColorRect" parent="ThermoMargin/ThermoVBox/TempsRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_vertical = 3
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="SetVBox" type="VBoxContainer" parent="ThermoMargin/ThermoVBox/TempsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="SetTitle" type="Label" parent="ThermoMargin/ThermoVBox/TempsRow/SetVBox"]
+layout_mode = 2
+text = "SET POINT"
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="SetTempLabel" type="Label" parent="ThermoMargin/ThermoVBox/TempsRow/SetVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–.–°C"
+theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(0.122, 0.435, 0.933, 1)
+
+[node name="CtrlRow" type="HBoxContainer" parent="ThermoMargin/ThermoVBox/TempsRow/SetVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MinusBtn" type="Button" parent="ThermoMargin/ThermoVBox/TempsRow/SetVBox/CtrlRow"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(72, 72)
+text = "−"
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+theme_override_styles/normal = SubResource("SB_BtnNormal")
+theme_override_styles/hover = SubResource("SB_BtnHover")
+theme_override_styles/pressed = SubResource("SB_BtnNormal")
+theme_override_styles/focus = SubResource("SB_Empty")
+
+[node name="PlusBtn" type="Button" parent="ThermoMargin/ThermoVBox/TempsRow/SetVBox/CtrlRow"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(72, 72)
+text = "+"
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+theme_override_styles/normal = SubResource("SB_BtnNormal")
+theme_override_styles/hover = SubResource("SB_BtnHover")
+theme_override_styles/pressed = SubResource("SB_BtnNormal")
+theme_override_styles/focus = SubResource("SB_Empty")
+
+[node name="ThermoSep2" type="ColorRect" parent="ThermoMargin/ThermoVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="ToggleRow" type="HBoxContainer" parent="ThermoMargin/ThermoVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ToggleLabel" type="Label" parent="ThermoMargin/ThermoVBox/ToggleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Thermostat enabled"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="EnableCheck" type="CheckButton" parent="ThermoMargin/ThermoVBox/ToggleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15

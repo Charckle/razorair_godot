@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/thermostat/ThermoCard.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/hvac_unit/HVACUnitCard.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/stikala/StikalaCard.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/opozorila/OpoCard.tscn" id="4"]
+
+[node name="HVAC" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CardsRow" type="HBoxContainer" parent="MainMargin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="ThermoCard" parent="MainMargin/MainVBox/CardsRow" instance=ExtResource("1")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HVACUnitCard" parent="MainMargin/MainVBox/CardsRow" instance=ExtResource("2")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StikalaCard" parent="MainMargin/MainVBox/CardsRow" instance=ExtResource("3")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OpoSep" type="ColorRect" parent="MainMargin/MainVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="OpoCard" parent="MainMargin/MainVBox" instance=ExtResource("4")]
+layout_mode = 2
+size_flags_vertical = 3

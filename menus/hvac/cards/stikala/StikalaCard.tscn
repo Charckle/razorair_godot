@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://menus/hvac/cards/stikala/stikala_card.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="SB_Card"]
+bg_color = Color(0.137, 0.157, 0.196, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.196, 0.220, 0.259, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 5
+
+[node name="StikalaCard" type="PanelContainer"]
+theme_override_styles/panel = SubResource("SB_Card")
+script = ExtResource("1")
+
+[node name="PlugsTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 3.0
+autostart = false
+
+[node name="StikalaMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="StikalaVBox" type="VBoxContainer" parent="StikalaMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="StikalaTitle" type="Label" parent="StikalaMargin/StikalaVBox"]
+layout_mode = 2
+text = "Stikala"
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="StikalaSep" type="ColorRect" parent="StikalaMargin/StikalaVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="PlugsScroll" type="ScrollContainer" parent="StikalaMargin/StikalaVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PlugsList" type="VBoxContainer" parent="StikalaMargin/StikalaVBox/PlugsScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="StatusLabel" type="Label" parent="StikalaMargin/StikalaVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Nalagam…"
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)

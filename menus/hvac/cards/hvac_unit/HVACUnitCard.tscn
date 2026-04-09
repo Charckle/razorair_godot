@@ -1,0 +1,179 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://menus/hvac/cards/hvac_unit/hvac_unit_card.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="SB_Card"]
+bg_color = Color(0.137, 0.157, 0.196, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.196, 0.220, 0.259, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 5
+
+[node name="HVACUnitCard" type="PanelContainer"]
+theme_override_styles/panel = SubResource("SB_Card")
+script = ExtResource("1")
+
+[node name="HVACUnitTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+autostart = false
+
+[node name="HVACMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HVACVBox" type="VBoxContainer" parent="HVACMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HVACTitle" type="Label" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+text = "HVAC Unit"
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="HVACSep1" type="ColorRect" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="OutdoorRow" type="HBoxContainer" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="OutdoorKey" type="Label" parent="HVACMargin/HVACVBox/OutdoorRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+text = "Outdoor"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="OutdoorVal" type="Label" parent="HVACMargin/HVACVBox/OutdoorRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="IntakeRow" type="HBoxContainer" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IntakeKey" type="Label" parent="HVACMargin/HVACVBox/IntakeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+text = "Intake (supply)"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="IntakeVal" type="Label" parent="HVACMargin/HVACVBox/IntakeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="OuttakeRow" type="HBoxContainer" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="OuttakeKey" type="Label" parent="HVACMargin/HVACVBox/OuttakeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+text = "Outtake (extract)"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="OuttakeVal" type="Label" parent="HVACMargin/HVACVBox/OuttakeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="HVACSep2" type="ColorRect" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="HeatExRow" type="HBoxContainer" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HeatExKey" type="Label" parent="HVACMargin/HVACVBox/HeatExRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+text = "Heat exchanger"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="HeatExVal" type="Label" parent="HVACMargin/HVACVBox/HeatExRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="HeaterRow" type="HBoxContainer" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HeaterKey" type="Label" parent="HVACMargin/HVACVBox/HeaterRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+text = "Heater"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="HeaterVal" type="Label" parent="HVACMargin/HVACVBox/HeaterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "–"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="HVACSep3" type="ColorRect" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="VentRow" type="HBoxContainer" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="VentKey" type="Label" parent="HVACMargin/HVACVBox/VentRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+text = "Ventilation"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="VentOption" type="OptionButton" parent="HVACMargin/HVACVBox/VentRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+theme_override_font_sizes/font_size = 15
+
+[node name="HVACSep4" type="ColorRect" parent="HVACMargin/HVACVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="HVACStatusLabel" type="Label" parent="HVACMargin/HVACVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Waiting for data…"
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
