@@ -13,9 +13,10 @@ signal plugs_status_received(plugs: Array)
 signal plug_set_done(success: bool)
 
 # ── Config ────────────────────────────────────────────────────────────────────
-var base_url: String = "http://192.168.0.1:5000"
-var username: String  = ""
-var password: String  = ""
+var base_url: String           = "http://192.168.0.1:5000"
+var username: String           = ""
+var password: String           = ""
+var vent_control_style: String = "dropdown"   # "dropdown" or "stepper"
 
 const CONFIG_PATH := "user://config.cfg"
 
@@ -91,18 +92,20 @@ func _make_http() -> HTTPRequest:
 func load_config() -> void:
 	var cfg = ConfigFile.new()
 	if cfg.load(CONFIG_PATH) == OK:
-		base_url = cfg.get_value("server", "base_url", "http://192.168.0.1:5000")
-		username  = cfg.get_value("auth",   "username", "")
-		password  = cfg.get_value("auth",   "password", "")
+		base_url           = cfg.get_value("server", "base_url",           "http://192.168.0.1:5000")
+		username           = cfg.get_value("auth",   "username",           "")
+		password           = cfg.get_value("auth",   "password",           "")
+		vent_control_style = cfg.get_value("ui",     "vent_control_style", "dropdown")
 	else:
 		save_config()
 
 
 func save_config() -> void:
 	var cfg = ConfigFile.new()
-	cfg.set_value("server", "base_url", base_url)
-	cfg.set_value("auth",   "username", username)
-	cfg.set_value("auth",   "password", password)
+	cfg.set_value("server", "base_url",           base_url)
+	cfg.set_value("auth",   "username",           username)
+	cfg.set_value("auth",   "password",           password)
+	cfg.set_value("ui",     "vent_control_style", vent_control_style)
 	cfg.save(CONFIG_PATH)
 
 

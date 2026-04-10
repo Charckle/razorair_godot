@@ -6,12 +6,13 @@ const C_OK    := Color(0.337, 0.784, 0.337)
 const C_ERR   := Color(0.902, 0.298, 0.298)
 
 # ── Node references (defined in Admin.tscn) ───────────────────────────────────
-@onready var _url_edit:       LineEdit = %UrlEdit
-@onready var _user_edit:      LineEdit = %UserEdit
-@onready var _pass_edit:      LineEdit = %PassEdit
-@onready var _save_btn:       Button   = %SaveBtn
-@onready var _reconnect_btn:  Button   = %ReconnectBtn
-@onready var _status_lbl:     Label    = %StatusLabel
+@onready var _url_edit:          LineEdit    = %UrlEdit
+@onready var _user_edit:         LineEdit    = %UserEdit
+@onready var _pass_edit:         LineEdit    = %PassEdit
+@onready var _save_btn:          Button      = %SaveBtn
+@onready var _reconnect_btn:     Button      = %ReconnectBtn
+@onready var _status_lbl:        Label       = %StatusLabel
+@onready var _vent_style_check:  CheckButton = %VentStyleCheck
 
 
 func _ready() -> void:
@@ -32,12 +33,14 @@ func _populate_fields() -> void:
 	_url_edit.text  = ApiClient.base_url
 	_user_edit.text = ApiClient.username
 	_pass_edit.text = ApiClient.password
+	_vent_style_check.button_pressed = ApiClient.vent_control_style == "stepper"
 
 
 func _write_fields_to_api_client() -> void:
-	ApiClient.base_url = _url_edit.text.strip_edges()
-	ApiClient.username = _user_edit.text.strip_edges()
-	ApiClient.password = _pass_edit.text
+	ApiClient.base_url           = _url_edit.text.strip_edges()
+	ApiClient.username           = _user_edit.text.strip_edges()
+	ApiClient.password           = _pass_edit.text
+	ApiClient.vent_control_style = "stepper" if _vent_style_check.button_pressed else "dropdown"
 	ApiClient.save_config()
 
 

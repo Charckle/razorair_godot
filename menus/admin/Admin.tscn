@@ -233,6 +233,53 @@ theme_override_styles/hover = SubResource("SB_BtnReconnectHover")
 theme_override_styles/pressed = SubResource("SB_BtnReconnect")
 theme_override_styles/focus = SubResource("SB_Empty")
 
+[node name="UICard" type="PanelContainer" parent="MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("SB_Card")
+
+[node name="CardMarg" type="MarginContainer" parent="MainMargin/MainVBox/UICard"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="FormVBox" type="VBoxContainer" parent="MainMargin/MainVBox/UICard/CardMarg"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="CardTitle" type="Label" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox"]
+layout_mode = 2
+text = "Display"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="Sep" type="ColorRect" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="VentStyleRow" type="HBoxContainer" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="VentStyleLabel" type="Label" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox/VentStyleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ventilation control"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="VentStyleCheck" type="CheckButton" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox/VentStyleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "Use +/− buttons"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
 [node name="StatusLabel" type="Label" parent="MainMargin/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
