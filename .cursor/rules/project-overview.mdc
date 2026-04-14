@@ -1,0 +1,42 @@
+---
+description: Project overview, structure, and architecture for Razorair
+alwaysApply: true
+---
+
+# Razorair — Project Overview
+
+**Razorair** is a **Godot 4.6 utility dashboard** (not a game) that controls a home HVAC / ventilation system via a local Flask-style backend. It targets **Web and Android** (mobile layout, `gl_compatibility` renderer).
+
+## Folder Structure
+
+```
+autoloads/
+  ApiClient.gd          ← Singleton: all HTTP, login, signals, config persistence
+menus/
+  main/                 ← Shell: sidebar nav, ContentHolder swap, login dialog
+  admin/                ← Settings: backend URL, credentials, vent control style
+  hvac/
+    HVAC.tscn           ← HVAC dashboard (no script; card children own their logic)
+    cards/
+      thermostat/       ← Shelly thermostat: temp/humidity/setpoint/enable
+      hvac_unit/        ← Systemair unit: temps, heat-exchanger %, ventilation level
+      stikala/          ← Shelly plugs list with on/off toggles
+      opozorila/        ← Weather warnings + calendar events merged and sorted
+```
+
+## Core Architecture
+
+- **Single source of truth:** `ApiClient` (autoload singleton) owns all network I/O and session state. UI never calls `HTTPRequest` directly.
+- **Signal-driven UI:** Cards connect to `ApiClient` signals (e.g. `hvac_data_received`, `login_success`) and call `ApiClient` methods to trigger polls/sets.
+- **Scene-based navigation:** `main.gd` preloads `HVAC.tscn` and `Admin.tscn`, parents both to `%ContentHolder`, and swaps visibility — no `change_scene_to_file`.
+- **Card autonomy:** Each card owns its own `Timer` and polls only when visible (`visibility_changed` + `login_success`). Cards are self-contained `.tscn` + `.gd` pairs.
+
+## Scene Entry
+
+`res://menus/main/Main.tscn` is the main scene. `ApiClient` is the only autoload.
+
+## Key Naming Conventions
+
+- Scene + script pairs share the same stem: `ThermoCard.tscn` / `thermo_card.gd`
+- Unique node names use `%` prefix in scripts: `%ContentHolder`, `%StatusLabel`
+- `.gd.uid` files are Godot-generated — do not edit them manually

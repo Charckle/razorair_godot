@@ -1,0 +1,56 @@
+---
+description: ApiClient singleton reference — signals, methods, and config
+globs: autoloads/ApiClient.gd
+alwaysApply: false
+---
+
+# ApiClient Singleton
+
+`ApiClient` (`autoloads/ApiClient.gd`) is the **only** place where HTTP requests are made. It handles:
+
+- Config persistence (`user://config.cfg`): `base_url`, `username`, `password`, `vent_control_style`
+- Two-phase Flask login: GET page → extract CSRF token → POST credentials → session cookie
+- Per-endpoint `HTTPRequest` nodes with busy flags
+
+## Login Flow
+
+```
+do_login()
+  → GET base_url + "/login/"         (extracts CSRF token from HTML)
+  → POST base_url + "/login/"        (sends user + password + CSRF)
+  → on success: emit login_success
+  → on failure: emit login_failed(message)
+```
+
+## Signals (connect from UI cards)
+
+| Signal | Payload | Emitted when |
+|--------|---------|--------------|
+| `login_success` | — | Login POST succeeds |
+| `login_failed(msg)` | `String` | Login POST fails |
+| `hvac_data_received(data)` | `Dictionary` | HVAC poll completes |
+| `thermostat_data_received(data)` | `Dictionary` | Thermostat poll completes |
+| `plugs_data_received(data)` | `Dictionary` | Plugs poll completes |
+| `warnings_received(data)` | `Dictionary` | Warnings+calendar poll completes |
+
+## Methods (call from UI cards)
+
+| Method | Description |
+|--------|-------------|
+| `do_login()` | Trigger the login sequence |
+| `get_hvac_data()` | Poll HVAC unit data |
+| `set_vent_level(level: int)` | Set ventilation level (0=stop, 1=slow, 2=med, 3=max) |
+| `get_thermostat_data()` | Poll thermostat |
+| `set_thermostat_setpoint(temp: float)` | Set thermostat target (±0.5 °C) |
+| `set_thermostat_enabled(enabled: bool)` | Enable/disable thermostat |
+| `get_plugs_status()` | Poll Shelly plugs |
+| `set_plug(id, state: bool)` | Toggle a plug on/off |
+| `get_warnings()` | Poll weather warnings + calendar |
+
+## Adding a New Endpoint
+
+1. Add `HTTPRequest` child node in `ApiClient.gd` scene or `_ready()`
+2. Add busy flag `var _foo_busy := false`
+3. Add signal `signal foo_received(data: Dictionary)`
+4. Implement `get_foo()` and `_on_foo_completed(result, code, headers, body)`
+5. Connect `foo_received` in the relevant card's `_ready()`

@@ -1,0 +1,80 @@
+---
+description: GDScript coding patterns used in this project
+globs: **/*.gd
+alwaysApply: false
+---
+
+# GDScript Patterns
+
+## Card Polling Pattern
+
+Every HVAC card uses this pattern — poll on visibility, not on a global timer:
+
+```gdscript
+func _ready() -> void:
+    visibility_changed.connect(_on_visibility_changed)
+    ApiClient.login_success.connect(_refresh)
+
+func _on_visibility_changed() -> void:
+    if is_visible_in_tree():
+        _refresh()
+    else:
+        $Timer.stop()
+
+func _refresh() -> void:
+    if not is_visible_in_tree():
+        return
+    ApiClient.get_hvac_data()
+    $Timer.start()
+```
+
+## HTTP Busy Guards
+
+`ApiClient` uses per-endpoint `_busy` flags to prevent overlapping requests. Always check before sending:
+
+```gdscript
+if _hvac_busy:
+    return
+_hvac_busy = true
+$HvacRequest.request(base_url + "/api/hvac")
+```
+
+## Debounce for User Input
+
+Ventilation stepper uses a propagation window so polled state doesn't overwrite the user's in-flight change:
+
+```gdscript
+var _propagating := false
+
+func _set_vent_level(level: int) -> void:
+    _propagating = true
+    ApiClient.set_vent_level(level)
+    await get_tree().create_timer(2.0).timeout
+    _propagating = false
+
+func _on_hvac_data_received(data: Dictionary) -> void:
+    if _propagating:
+        return
+    # safe to update UI from polled state
+```
+
+## Unique Node References
+
+Use `%NodeName` syntax (unique names) instead of fragile `$Path/To/Node`:
+
+```gdscript
+%StatusLabel.text = "Connected"   # ✅ robust
+$RootHBox/Sidebar/SidebarVBox/StatusLabel.text = "Connected"  # ❌ fragile
+```
+
+## Config Persistence
+
+`ApiClient` saves to `user://config.cfg`. Use it for any persistent settings — do not hardcode URLs or credentials.
+
+## Signals to Define on ApiClient
+
+When adding a new API endpoint, follow the existing pattern:
+1. Add a signal: `signal my_data_received(data: Dictionary)`
+2. Add a busy flag: `var _my_busy := false`
+3. Add a dedicated `HTTPRequest` child node
+4. Emit the signal in `_on_my_request_completed`
