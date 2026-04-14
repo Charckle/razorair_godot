@@ -3,6 +3,9 @@ extends PanelContainer
 const C_ACCENT := Color(0.122, 0.435, 0.933)
 const C_OFF    := Color(0.545, 0.580, 0.620)
 
+const DEBOUNCE_SECS    := 1.5
+const PROPAGATION_SECS := 3.0
+
 @onready var _timer:         Timer       = %ThermoTimer
 @onready var _curr_temp_lbl: Label       = %CurrTempLabel
 @onready var _humidity_lbl:  Label       = %HumidityLabel
@@ -12,9 +15,12 @@ const C_OFF    := Color(0.545, 0.580, 0.620)
 @onready var _plus_btn:      Button      = %PlusBtn
 @onready var _enable_chk:    CheckButton = %EnableCheck
 
-var _local_set_temp: float = 20.0
-var _enabled:        bool  = false
-var _set_pending:    bool  = false
+var _local_set_temp:   float = 20.0
+var _enabled:          bool  = false
+# Two-phase lock: true while debouncing or waiting for thermostat to apply the change
+var _temp_locked:      bool  = false
+var _temp_propagating: bool  = false
+var _temp_debounce:    Timer
 
 
 func _ready() -> void:
@@ -23,6 +29,12 @@ func _ready() -> void:
 	_enable_chk.toggled.connect(_on_enable_toggled)
 	_timer.timeout.connect(_do_poll)
 	visibility_changed.connect(_on_visibility_changed)
+
+	_temp_debounce = Timer.new()
+	_temp_debounce.one_shot = true
+	add_child(_temp_debounce)
+	_temp_debounce.timeout.connect(_on_temp_debounce_timeout)
+
 	ApiClient.thermostat_status_received.connect(_on_data)
 	ApiClient.thermostat_set_done.connect(_on_set_done)
 	ApiClient.login_success.connect(_do_poll)
@@ -48,7 +60,7 @@ func _on_data(data: Dictionary) -> void:
 
 	if cur != null:
 		_curr_temp_lbl.text = "%.1f°C" % float(cur)
-	if setp != null and not _set_pending:
+	if setp != null and not _temp_locked:
 		_local_set_temp = float(setp)
 		_set_temp_lbl.text = "%.1f°C" % _local_set_temp
 	if hum != null:
@@ -71,19 +83,35 @@ func _update_status_label() -> void:
 func _on_minus_pressed() -> void:
 	_local_set_temp = maxf(_local_set_temp - 0.5, 5.0)
 	_set_temp_lbl.text = "%.1f°C" % _local_set_temp
-	_set_pending = true
-	ApiClient.set_thermostat_temp(_local_set_temp)
+	_restart_debounce()
 
 
 func _on_plus_pressed() -> void:
 	_local_set_temp = minf(_local_set_temp + 0.5, 35.0)
 	_set_temp_lbl.text = "%.1f°C" % _local_set_temp
-	_set_pending = true
-	ApiClient.set_thermostat_temp(_local_set_temp)
+	_restart_debounce()
+
+
+func _restart_debounce() -> void:
+	_temp_locked      = true
+	_temp_propagating = false
+	_temp_debounce.stop()
+	_temp_debounce.start(DEBOUNCE_SECS)
+
+
+func _on_temp_debounce_timeout() -> void:
+	if not _temp_propagating:
+		# Debounce phase over — send the command, enter propagation phase
+		_temp_propagating = true
+		ApiClient.set_thermostat_temp(_local_set_temp)
+		_temp_debounce.start(PROPAGATION_SECS)
+	else:
+		# Propagation phase over — thermostat should have applied the change, unlock
+		_temp_locked      = false
+		_temp_propagating = false
 
 
 func _on_set_done(success: bool) -> void:
-	_set_pending = false
 	if not success:
 		_set_temp_lbl.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
 		await get_tree().create_timer(1.5).timeout
