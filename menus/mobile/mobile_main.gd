@@ -4,13 +4,18 @@ const C_TEXT2 := Color(0.545, 0.580, 0.620)
 const C_OK    := Color(0.337, 0.784, 0.337)
 const C_ERR   := Color(0.902, 0.298, 0.298)
 
-@onready var _status_lbl:       Label          = %StatusLabel
-@onready var _settings_btn:     Button         = %SettingsBtn
-@onready var _settings_overlay: PanelContainer = %SettingsOverlay
-@onready var _done_btn:         Button         = %DoneBtn
+@onready var _status_lbl:       Label           = %StatusLabel
+@onready var _settings_btn:     Button          = %SettingsBtn
+@onready var _settings_overlay: PanelContainer  = %SettingsOverlay
+@onready var _done_btn:         Button          = %DoneBtn
+@onready var _plugs_scroll:     ScrollContainer = $RootVBox/Scroll/CardMarg/CardList/StikalaCard/StikalaMargin/StikalaVBox/PlugsScroll
 
 
 func _ready() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	get_tree().root.size_changed.connect(
+		func(): set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	)
 	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
 	get_tree().root.content_scale_size = Vector2i(480, 854)
 
@@ -19,6 +24,7 @@ func _ready() -> void:
 
 	ApiClient.login_success.connect(_on_login_success)
 	ApiClient.login_failed.connect(_on_login_failed)
+	ApiClient.plugs_status_received.connect(_resize_plugs_scroll)
 
 	_set_status("Connecting…", C_TEXT2)
 	ApiClient.do_login()
@@ -40,6 +46,11 @@ func _on_login_success() -> void:
 func _on_login_failed(_message: String) -> void:
 	_set_status("Not connected — tap ⚙ to configure", C_ERR)
 	_open_settings()
+
+
+func _resize_plugs_scroll(plugs: Array) -> void:
+	var count = max(plugs.size(), 1)
+	_plugs_scroll.custom_minimum_size.y = count * 64 + (count - 1) * 10
 
 
 func _set_status(text: String, color: Color) -> void:

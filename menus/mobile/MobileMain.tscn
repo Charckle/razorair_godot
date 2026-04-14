@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://menus/mobile/mobile_main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://menus/hvac/cards/thermostat/ThermoCard.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://menus/hvac/cards/hvac_unit/HVACUnitCard.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://menus/admin/Admin.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/stikala/StikalaCard.tscn" id="5"]
 
 [sub_resource type="StyleBoxFlat" id="SB_Bar"]
 bg_color = Color(0.082, 0.086, 0.110, 1)
@@ -140,6 +141,11 @@ size_flags_horizontal = 3
 [node name="HVACUnitCard" parent="RootVBox/Scroll/CardMarg/CardList" instance=ExtResource("3")]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="StikalaCard" parent="RootVBox/Scroll/CardMarg/CardList" instance=ExtResource("5")]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 80)
 
 [node name="SettingsOverlay" type="PanelContainer" parent="."]
 unique_name_in_owner = true
