@@ -22,6 +22,10 @@ var _active_key: String     = ""
 
 
 func _ready() -> void:
+	if ApiClient.display_mode == "portrait":
+		get_tree().change_scene_to_file("res://menus/mobile/MobileMain.tscn")
+		return
+
 	_nav_btns = {"hvac": _btn_hvac, "admin": _btn_admin}
 
 	# Nav button signals

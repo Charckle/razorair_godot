@@ -17,6 +17,7 @@ var base_url: String           = "http://192.168.0.1:5000"
 var username: String           = ""
 var password: String           = ""
 var vent_control_style: String = "dropdown"   # "dropdown" or "stepper"
+var display_mode: String       = "landscape"  # "landscape" or "portrait"
 
 const CONFIG_PATH := "user://config.cfg"
 
@@ -96,6 +97,7 @@ func load_config() -> void:
 		username           = cfg.get_value("auth",   "username",           "")
 		password           = cfg.get_value("auth",   "password",           "")
 		vent_control_style = cfg.get_value("ui",     "vent_control_style", "dropdown")
+		display_mode       = cfg.get_value("ui",     "display_mode",       "landscape")
 	else:
 		save_config()
 
@@ -106,6 +108,7 @@ func save_config() -> void:
 	cfg.set_value("auth",   "username",           username)
 	cfg.set_value("auth",   "password",           password)
 	cfg.set_value("ui",     "vent_control_style", vent_control_style)
+	cfg.set_value("ui",     "display_mode",       display_mode)
 	cfg.save(CONFIG_PATH)
 
 
@@ -131,7 +134,7 @@ func _on_login_completed(result: int, code: int,
 		# ── Phase 1: received the login page ─────────────────────────────────
 		if result != HTTPRequest.RESULT_SUCCESS or code != 200:
 			_login_phase = 0
-			login_failed.emit("Server unreachable (HTTP %d)" % code)
+			login_failed.emit(_conn_error(result, code))
 			return
 
 		_extract_cookie(headers)
@@ -179,11 +182,31 @@ func _on_login_completed(result: int, code: int,
 		elif code == 200:
 			var html := body.get_string_from_utf8()
 			if "napačen" in html or "Invalid" in html or "error" in html.to_lower():
-				login_failed.emit("Invalid username or password")
+				login_failed.emit("Wrong username or password")
 			else:
-				login_failed.emit("Login failed — check credentials")
+				login_failed.emit("Authentication failed — server response unclear")
 		else:
-			login_failed.emit("Unexpected response (HTTP %d)" % code)
+			login_failed.emit("Unexpected server response (HTTP %d)" % code)
+
+
+func _conn_error(result: int, code: int) -> String:
+	match result:
+		HTTPRequest.RESULT_CANT_CONNECT:
+			return "Cannot connect — is the server running?"
+		HTTPRequest.RESULT_CANT_RESOLVE:
+			return "Cannot resolve hostname — check the URL"
+		HTTPRequest.RESULT_CONNECTION_ERROR:
+			return "Connection error — network problem?"
+		HTTPRequest.RESULT_NO_RESPONSE:
+			return "No response from server"
+		HTTPRequest.RESULT_TIMEOUT:
+			return "Server timed out"
+		HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
+			return "TLS error — try http:// instead of https://"
+		HTTPRequest.RESULT_SUCCESS:
+			return "Server returned HTTP %d" % code
+		_:
+			return "Connection failed (err %d)" % result
 
 
 func _extract_csrf(html: String) -> bool:

@@ -188,9 +188,14 @@ text = "Password"
 theme_override_font_sizes/font_size = 13
 theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
 
-[node name="PassEdit" type="LineEdit" parent="MainMargin/MainVBox/Card/CardMarg/FormVBox/PassField"]
+[node name="PassInputRow" type="HBoxContainer" parent="MainMargin/MainVBox/Card/CardMarg/FormVBox/PassField"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PassEdit" type="LineEdit" parent="MainMargin/MainVBox/Card/CardMarg/FormVBox/PassField/PassInputRow"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 52)
 placeholder_text = "••••••••"
 secret = true
@@ -199,6 +204,17 @@ theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
 theme_override_colors/caret_color = Color(0.122, 0.435, 0.933, 1)
 theme_override_styles/normal = SubResource("SB_EditNormal")
 theme_override_styles/focus = SubResource("SB_EditFocus")
+
+[node name="ShowPassBtn" type="Button" parent="MainMargin/MainVBox/Card/CardMarg/FormVBox/PassField/PassInputRow"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(52, 52)
+text = "👁"
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("SB_BtnSave")
+theme_override_styles/hover = SubResource("SB_BtnSaveHover")
+theme_override_styles/pressed = SubResource("SB_BtnSave")
+theme_override_styles/focus = SubResource("SB_Empty")
 
 [node name="Sep3" type="ColorRect" parent="MainMargin/MainVBox/Card/CardMarg/FormVBox"]
 layout_mode = 2
@@ -277,6 +293,27 @@ unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 52)
 text = "Use +/− buttons"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="PortraitModeRow" type="HBoxContainer" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="PortraitModeLabel" type="Label" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox/PortraitModeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mobile portrait mode"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="PortraitModeCheck" type="CheckButton" parent="MainMargin/MainVBox/UICard/CardMarg/FormVBox/PortraitModeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "Enable (restarts layout)"
 theme_override_font_sizes/font_size = 14
 theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
 

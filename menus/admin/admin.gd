@@ -12,12 +12,15 @@ const C_ERR   := Color(0.902, 0.298, 0.298)
 @onready var _save_btn:          Button      = %SaveBtn
 @onready var _reconnect_btn:     Button      = %ReconnectBtn
 @onready var _status_lbl:        Label       = %StatusLabel
+@onready var _show_pass_btn:     Button      = %ShowPassBtn
 @onready var _vent_style_check:  CheckButton = %VentStyleCheck
+@onready var _portrait_check:    CheckButton = %PortraitModeCheck
 
 
 func _ready() -> void:
 	_save_btn.pressed.connect(_on_save_pressed)
 	_reconnect_btn.pressed.connect(_on_reconnect_pressed)
+	_show_pass_btn.pressed.connect(_on_show_pass_toggled)
 
 	# Use separate functions so signal parameter types match exactly —
 	# login_success emits nothing; login_failed emits (message: String).
@@ -34,6 +37,7 @@ func _populate_fields() -> void:
 	_user_edit.text = ApiClient.username
 	_pass_edit.text = ApiClient.password
 	_vent_style_check.button_pressed = ApiClient.vent_control_style == "stepper"
+	_portrait_check.button_pressed   = ApiClient.display_mode == "portrait"
 
 
 func _write_fields_to_api_client() -> void:
@@ -41,6 +45,7 @@ func _write_fields_to_api_client() -> void:
 	ApiClient.username           = _user_edit.text.strip_edges()
 	ApiClient.password           = _pass_edit.text
 	ApiClient.vent_control_style = "stepper" if _vent_style_check.button_pressed else "dropdown"
+	ApiClient.display_mode       = "portrait" if _portrait_check.button_pressed else "landscape"
 	ApiClient.save_config()
 
 
@@ -69,6 +74,11 @@ func _on_login_failed(message: String) -> void:
 	_save_btn.disabled      = false
 	_reconnect_btn.disabled = false
 	_set_status("Login failed: " + message, C_ERR)
+
+
+func _on_show_pass_toggled() -> void:
+	_pass_edit.secret = not _pass_edit.secret
+	_show_pass_btn.text = "🙈" if not _pass_edit.secret else "👁"
 
 
 func _set_status(text: String, color: Color) -> void:

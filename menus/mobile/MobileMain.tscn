@@ -1,0 +1,197 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://menus/mobile/mobile_main.gd" id="1"]
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/thermostat/ThermoCard.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://menus/hvac/cards/hvac_unit/HVACUnitCard.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://menus/admin/Admin.tscn" id="4"]
+
+[sub_resource type="StyleBoxFlat" id="SB_Bar"]
+bg_color = Color(0.082, 0.086, 0.110, 1)
+border_width_bottom = 1
+border_color = Color(0.196, 0.220, 0.259, 1)
+
+[sub_resource type="StyleBoxFlat" id="SB_Overlay"]
+bg_color = Color(0.082, 0.086, 0.110, 1)
+
+[sub_resource type="StyleBoxFlat" id="SB_BtnFlat"]
+bg_color = Color(0.118, 0.137, 0.173, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.196, 0.220, 0.259, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="SB_BtnFlatHover"]
+bg_color = Color(0.165, 0.192, 0.235, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="SB_BtnAccent"]
+bg_color = Color(0.122, 0.435, 0.933, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="SB_BtnAccentHover"]
+bg_color = Color(0.239, 0.506, 0.957, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="SB_Empty"]
+
+[node name="MobileMain" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.063, 0.071, 0.094, 1)
+
+[node name="RootVBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TopBarPanel" type="PanelContainer" parent="RootVBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("SB_Bar")
+
+[node name="TopBarMarg" type="MarginContainer" parent="RootVBox/TopBarPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="HBoxContainer" parent="RootVBox/TopBarPanel/TopBarMarg"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="RootVBox/TopBarPanel/TopBarMarg/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "RAZORAIR"
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="StatusLabel" type="Label" parent="RootVBox/TopBarPanel/TopBarMarg/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+vertical_alignment = 1
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.545, 0.580, 0.620, 1)
+
+[node name="SettingsBtn" type="Button" parent="RootVBox/TopBarPanel/TopBarMarg/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(52, 44)
+text = "⚙"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+theme_override_styles/normal = SubResource("SB_BtnFlat")
+theme_override_styles/hover = SubResource("SB_BtnFlatHover")
+theme_override_styles/pressed = SubResource("SB_BtnFlat")
+theme_override_styles/focus = SubResource("SB_Empty")
+
+[node name="Scroll" type="ScrollContainer" parent="RootVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CardMarg" type="MarginContainer" parent="RootVBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="CardList" type="VBoxContainer" parent="RootVBox/Scroll/CardMarg"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ThermoCard" parent="RootVBox/Scroll/CardMarg/CardList" instance=ExtResource("2")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HVACUnitCard" parent="RootVBox/Scroll/CardMarg/CardList" instance=ExtResource("3")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsOverlay" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("SB_Overlay")
+
+[node name="OverlayVBox" type="VBoxContainer" parent="SettingsOverlay"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="OverlayHeaderMarg" type="MarginContainer" parent="SettingsOverlay/OverlayVBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="OverlayHeader" type="HBoxContainer" parent="SettingsOverlay/OverlayVBox/OverlayHeaderMarg"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="OverlayTitle" type="Label" parent="SettingsOverlay/OverlayVBox/OverlayHeaderMarg/OverlayHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Settings"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+
+[node name="DoneBtn" type="Button" parent="SettingsOverlay/OverlayVBox/OverlayHeaderMarg/OverlayHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(100, 44)
+text = "✕ Done"
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.902, 0.929, 0.953, 1)
+theme_override_styles/normal = SubResource("SB_BtnAccent")
+theme_override_styles/hover = SubResource("SB_BtnAccentHover")
+theme_override_styles/pressed = SubResource("SB_BtnAccent")
+theme_override_styles/focus = SubResource("SB_Empty")
+
+[node name="OverlaySep" type="ColorRect" parent="SettingsOverlay/OverlayVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 1)
+color = Color(0.196, 0.220, 0.259, 1)
+
+[node name="AdminInst" parent="SettingsOverlay/OverlayVBox" instance=ExtResource("4")]
+layout_mode = 2
+size_flags_vertical = 3
